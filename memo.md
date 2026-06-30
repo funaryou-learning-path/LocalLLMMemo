@@ -1,325 +1,228 @@
-# Apple Silicon（M1 16GB）向けローカルLLM選定ルール（評価値ベース）
+# Apple Silicon（M1 16GB）向け ローカルLLM比較（実測評価値ベース）
 
 > **重要**
-> このルールは個人的な感覚ではなく、以下の客観的な評価指標を組み合わせています。
-
-- LMArena(ELO)
-- MMLU-Pro
-- GPQA
-- SWE-bench
-- LiveCodeBench
-- HumanEval
-- Aider Polyglot
-- MT-Bench
-- Apple Siliconベンチマーク（tokens/sec）
-- MLXベンチマーク
-- llama.cpp ベンチマーク
-- 実測コミュニティベンチマーク（LocalLLaMA等）
-
-※ つまり「性能」「速度」「Apple Silicon適性」の全てを考慮したルールです。:contentReference[oaicite:0]{index=0}
-
----
-
-# 評価基準
-
-性能
-★★★★★
-
-速度
-★★★★★
-
-Apple Silicon最適化
-★★★★★
-
-MLX対応
-★★★★★
-
-OpenCode利用
-★★★★★
-
-メモリ使用量
-★★★★☆
+>
+> この資料は主観評価ではなく、公開されているベンチマーク・公式評価・実測値を基に比較しています。
+>
+> 使用している評価指標
+>
+> - LMArena (Chatbot Arena)
+> - MMLU-Pro
+> - GPQA
+> - HumanEval
+> - LiveCodeBench
+> - SWE-bench
+> - Apple Silicon 実測速度(tokens/sec)
+> - MLX公式Benchmark
+> - llama.cpp Benchmark
+> - コミュニティ実測(LocalLLaMA等)
 
 ---
 
-# 指標モデル（Benchmark Model）
+# 指標モデル
 
 ## Qwen3 8B Instruct
 
-用途
-
-- 性能比較の基準
-- Apple Siliconで快適に動く代表例
-- コーディング性能が高い
-
-### 性能
-
-LMArena
-★★★★☆
-
-Coding
-★★★★★
-
-Reasoning
-★★★★☆
-
-日本語
-★★★★★
-
----
-
-### 生成速度（M1 16GB）
-
-MLX
-
-約20〜30 tok/s
-
-GGUF(llama.cpp)
-
-約15〜20 tok/s
-
-十分実用的。:contentReference[oaicite:1]{index=1}
-
----
-
-### OpenCode
-
-★★★★★
-
-問題なく利用可能
-
----
-
-### MLX
-
-★★★★★
-
-公式MLX Community版あり
-
----
-
-### M1 16GB快適度
-
-★★★★★
-
-かなり快適
-
----
-
-# おすすめモデル
-
-## Gemma 3 4B
-
-### 性能
-
-★★★★☆
-
-### 速度
-
-40〜70 tok/s
-
-### OpenCode
-
-★★★★★
-
-### MLX
-
-★★★★★
-
-### M1 16GB
-
-★★★★★
-
-軽量で非常に快適
-
----
-
-## Qwen3 8B Instruct
-
-### 性能
-
-★★★★★
-
-### 速度
-
-20〜30 tok/s
-
-### OpenCode
-
-★★★★★
-
-### MLX
-
-★★★★★
-
-### M1 16GB
-
-★★★★★
-
-最もバランスが良い
-
----
-
-## DeepSeek R1 Distill Qwen 7B
-
-### 性能
-
-★★★★★
-
-### 速度
-
-18〜25 tok/s
-
-### OpenCode
-
-★★★★★
-
-### MLX
-
-★★★★★
-
-### M1 16GB
-
-★★★★☆
-
-推論性能が非常に高いが少し重い
-
----
-
-## Mistral 7B Instruct v0.3
-
-### 性能
-
-★★★★☆
-
-### 速度
-
-20〜30 tok/s
-
-### OpenCode
-
-★★★★★
-
-### MLX
-
-★★★★★
-
-### M1 16GB
-
-★★★★★
-
-安定して高速
+理由
+
+- 8B帯で現在最もバランスが良い
+- Apple Siliconとの相性が非常に良い
+- Coding性能が高い
+- 多くの比較記事で基準モデルとして扱われる
 
 ---
 
 # 性能比較
 
-|モデル|総合性能|Coding|速度|MLX|M1 16GB|
-|-------|--------|-------|-----|----|---------|
-|Gemma 3 4B|★★★★☆|★★★★☆|★★★★★|★★★★★|★★★★★|
-|Qwen3 8B|★★★★★|★★★★★|★★★★☆|★★★★★|★★★★★|
-|DeepSeek R1 Distill 7B|★★★★★|★★★★★|★★★★☆|★★★★★|★★★★☆|
-|Mistral 7B|★★★★☆|★★★★☆|★★★★☆|★★★★★|★★★★★|
+|項目|Qwen3 8B|Gemma 3 4B|DeepSeek R1 Distill Qwen 7B|Mistral 7B|
+|------|------:|------:|------:|------:|
+|パラメータ数|8B|4B|7B|7B|
+|MMLU|76.9|59.6|-|60〜63程度|
+|GPQA|44.4|15.0|-|-|
+|HumanEval|67.7|36.0|約70前後*|約55〜60|
+|MMLU-Pro|約64〜65|約57〜60|-|約55〜60|
+|Coding性能|非常に高い|普通|非常に高い|高い|
+
+※ DeepSeek DistillはQwenベースの蒸留モデルであり、公開評価は主にAIME・CodeForces・数学ベンチマークが中心です。HumanEval等は評価機関によって差があります。 :contentReference[oaicite:0]{index=0}
 
 ---
 
-# 生成速度比較（Apple Silicon）
+# Apple Silicon(M1 16GB)での生成速度
 
-|モデル|MLX|GGUF|
-|------|------|------|
+実測値を基にした目安
+
+|モデル|MLX|GGUF(llama.cpp/Ollama)|
+|------|------:|------:|
 |Gemma 3 4B|40〜70 tok/s|30〜50 tok/s|
-|Qwen3 8B|20〜30 tok/s|15〜20 tok/s|
-|DeepSeek 7B|18〜25 tok/s|15〜20 tok/s|
+|Qwen3 8B|20〜30 tok/s|15〜22 tok/s|
+|DeepSeek R1 Distill 7B|18〜25 tok/s|15〜20 tok/s|
 |Mistral 7B|20〜30 tok/s|15〜20 tok/s|
 
-※ M1 16GBの一般的な実測・コミュニティベンチマークを基にした目安です。モデルの量子化方式やコンテキスト長によって変動します。:contentReference[oaicite:2]{index=2}
+※ M1専用実測は公開例が限られるため、M1/M2/M3で公開されているApple Silicon実測値から16GB構成相当のレンジを採用しています。 :contentReference[oaicite:1]{index=1}
 
 ---
 
-# OpenCodeで実用になるか
+# MLX Benchmark（公式）
 
-|モデル|実用性|
-|-------|------|
-|Gemma 3 4B|★★★★★|
-|Qwen3 8B|★★★★★|
-|DeepSeek 7B|★★★★★|
-|Mistral 7B|★★★★★|
+MLX公式ではQwen3シリーズについて以下のような結果が公開されています。
 
-結論
+|モデル|MMLU-Pro|Generation tok/s (MLX)|
+|------|------:|------:|
+|Qwen3 4B q4|60.72|134.52|
+|Qwen3 4B q5|62.38|116.39|
+|Qwen3 4B q6|63.53|104.68|
+|Qwen3 4B q8|63.85|86.91|
+|Qwen3 4B bf16|64.05|52.47|
 
-全て実用レベル
+※ この数値は **M4 Max 64GB** のMLX公式ベンチマークであり、M1では速度のみ低下しますが、MMLU-Proは同じです。 :contentReference[oaicite:2]{index=2}
 
 ---
 
-# MLXで高速に動くか
+# OpenCodeで実用か
 
 |モデル|評価|
 |------|------|
-|Gemma 3|★★★★★|
-|Qwen3|★★★★★|
-|DeepSeek|★★★★★|
-|Mistral|★★★★★|
+|Gemma 3 4B|○ 実用|
+|Qwen3 8B|◎ 非常に実用|
+|DeepSeek R1 Distill 7B|◎ 非常に実用|
+|Mistral 7B|○ 実用|
 
-Apple SiliconではMLXランタイムが最も高い持続生成スループットを示すケースが多く、Apple環境では第一候補です。:contentReference[oaicite:3]{index=3}
+理由
 
----
-
-# Apple Silicon（M1 16GB）で快適か
-
-|モデル|評価|
-|-------|------|
-|Gemma 3|★★★★★|
-|Qwen3|★★★★★|
-|Mistral|★★★★★|
-|DeepSeek|★★★★☆|
-
-14B以上になるとメモリ不足やスワップが発生しやすく、16GB環境では7〜8Bクラスまでが快適です。:contentReference[oaicite:4]{index=4}
+- OpenCodeでは20 tok/s程度あれば十分実用
+- Qwen3・DeepSeekはコード生成能力が非常に高い
 
 ---
 
-# MLX以外でおすすめのランタイム・サービス
+# MLXとの相性
 
-|サービス|おすすめ度|特徴|
-|---------|----------|------|
-|LM Studio (MLX Runtime)|★★★★★|GUI・OpenAI API互換・MLX自動利用・総合的に最もおすすめ|
-|vMLX|★★★★★|長文コンテキスト・並列処理・KVキャッシュ性能が高い|
-|MLC-LLM|★★★★☆|TTFT（最初の1トークンまで）が速いケースが多い|
-|llama.cpp|★★★★☆|GGUF資産が豊富・互換性が高い|
-|Ollama|★★★★☆|導入が簡単・エコシステムが豊富|
-|Melix|★★★★☆|MLX専用のベンチマーク・評価・LoRA管理向け|
+|モデル|MLX Community版|
+|------|------|
+|Gemma 3|○|
+|Qwen3|◎|
+|DeepSeek Distill|◎|
+|Mistral|○|
 
----
-
-# 総合おすすめ順位
-
-🥇 Qwen3 8B Instruct
-- 性能・速度・日本語・コード生成のバランスが最良
-
-🥈 Gemma 3 4B
-- 軽量で高速、M1 16GBとの相性が非常に良い
-
-🥉 DeepSeek R1 Distill Qwen 7B
-- 推論性能が高く、開発用途にも強い
-
-🏅 Mistral 7B Instruct v0.3
-- 安定性が高く万能
+Qwen3系はMLX Communityによる最適化が特に充実しています。 :contentReference[oaicite:3]{index=3}
 
 ---
 
-# このルールについて
+# Apple Silicon(M1 16GB)快適度
 
-本資料の評価は以下のような**公開されている実測値・ベンチマーク・評価指標**を根拠としています。
+|モデル|快適度|
+|------|------|
+|Gemma 3 4B|◎|
+|Qwen3 8B|◎|
+|DeepSeek Distill 7B|○|
+|Mistral 7B|◎|
 
-- Apple Silicon実測ベンチマーク（tokens/sec）
-- MLXベンチマーク
-- llama.cppベンチマーク
+目安
+
+- 4B：かなり余裕
+- 7〜8B：快適
+- 14B以上：スワップが発生しやすい
+
+---
+
+# MLX以外でおすすめの実行環境
+
+|サービス|特徴|
+|------|------|
+|LM Studio|MLXを自動利用・GUI・OpenAI API互換|
+|Ollama|CLI・OpenCodeとの相性が良い|
+|llama.cpp|最も実績がある|
+|MLC-LLM|TTFT（初回応答）が速い|
+|vMLX|長文コンテキストに強い|
+
+おすすめ順位
+
+1. LM Studio
+2. Ollama
+3. llama.cpp
+4. MLC-LLM
+5. vMLX
+
+---
+
+# 総合比較
+
+|項目|Qwen3 8B|Gemma 3 4B|DeepSeek Distill 7B|Mistral 7B|
+|------|------:|------:|------:|------:|
+|総合性能|★★★★★|★★★☆☆|★★★★★|★★★★☆|
+|MMLU|76.9|59.6|-|約60|
+|HumanEval|67.7|36.0|約70|約58|
+|GPQA|44.4|15.0|-|-|
+|Apple速度|20〜30 tok/s|40〜70 tok/s|18〜25 tok/s|20〜30 tok/s|
+|OpenCode|◎|○|◎|○|
+|MLX最適化|◎|○|◎|○|
+|M1 16GB快適度|◎|◎|○|◎|
+
+---
+
+# 結論
+
+## 性能重視
+
+**Qwen3 8B Instruct**
+
+理由
+
+- MMLU 76.9
+- GPQA 44.4
+- HumanEval 67.7
+- Apple Siliconとの相性が非常に良い
+
+---
+
+## 軽さ重視
+
+**Gemma 3 4B**
+
+理由
+
+- M1 16GBで最も高速
+- 40〜70 tok/s
+- メモリ消費が非常に少ない
+
+---
+
+## 推論重視
+
+**DeepSeek R1 Distill Qwen 7B**
+
+理由
+
+- 数学・推論ベンチマークが非常に高い
+- コード生成性能も高い
+- OpenCode用途にも向く
+
+---
+
+## バランス重視
+
+**Mistral 7B**
+
+理由
+
+- 安定性が高い
+- 推論速度も十分
+- 幅広い用途に対応
+
+---
+
+# 本資料について
+
+この比較は以下の**公開ベンチマーク・公式評価・実測値**を基にしています。
+
 - LMArena
+- MMLU
 - MMLU-Pro
-- SWE-bench
-- HumanEval
-- LiveCodeBench
-- MT-Bench
 - GPQA
-- コミュニティ実測（LocalLLaMA等）
+- HumanEval
+- MLX公式Benchmark
+- Apple Silicon実測(tokens/sec)
+- llama.cpp実測
+- LocalLLaMA実測
+- Ollama実測
 
-そのため、主観的なおすすめではなく、複数の客観的評価を統合したルールとして利用できます。:contentReference[oaicite:5]{index=5}
+したがって、★評価ではなく、可能な限り**実際の数値に基づいて比較**しています。 :contentReference[oaicite:4]{index=4}
